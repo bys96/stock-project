@@ -1,0 +1,7 @@
+frontend.urls=url1, url2
+
+krx.api.key=apikey
+
+spring.datasource.url=jdbc:mysql://your-domain/stock_db
+spring.datasource.username=USERNAME
+spring.datasource.password=PASSWORD

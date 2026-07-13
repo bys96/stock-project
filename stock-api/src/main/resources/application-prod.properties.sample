@@ -1,0 +1,7 @@
+frontend.urls=https://your-vercel.vercel.app
+
+krx.api.key=apikey
+
+spring.datasource.url=jdbc:postgresql://HOST:5432/DATABASE?sslmode=require
+spring.datasource.username=USERNAME
+spring.datasource.password=PASSWORD
