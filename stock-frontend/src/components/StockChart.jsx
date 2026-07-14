@@ -41,7 +41,7 @@ export default function StockChart({
       <div className="chart-loading">
         <ClipLoader size={50} color="#2563eb" />
         <p>데이터를 조회하는 중입니다...</p>
-        <p>최초 조회 시 서버 시작으로 최대 1분 정도 소요될 수 있습니다.</p>
+        <p>최초 조회 시 서버 재시작으로 최대 3분 정도 소요될 수 있습니다.</p>
       </div>
     );
   }
