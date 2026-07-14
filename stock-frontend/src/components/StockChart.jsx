@@ -36,17 +36,21 @@ export default function StockChart({
   const dateFormatter = (value) =>
     `${value.slice(2, 4)}/${value.slice(4, 6)}/${value.slice(6, 8)}`;
 
+  if (loading) {
+    return (
+      <div className="chart-loading">
+        <ClipLoader size={50} color="#2563eb" />
+        <p>데이터를 조회하는 중입니다...</p>
+        <p>최초 조회 시 서버 시작으로 최대 1분 정도 소요될 수 있습니다.</p>
+      </div>
+    );
+  }
+
   if (!chartData.length) {
     return <div className="chart-empty">조회된 데이터가 없습니다.</div>;
   }
 
-  return loading ? (
-    <div className="chart-loading">
-      <ClipLoader size={50} color="#2563eb" />
-      <p>데이터를 조회하는 중입니다...</p>
-      <p>최초 조회 시 서버 시작으로 최대 1분 정도 소요될 수 있습니다.</p>
-    </div>
-  ) : (
+  return (
     <ResponsiveContainer width="100%" height={450}>
       <LineChart
         className="stock-chart"
