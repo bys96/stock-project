@@ -33,18 +33,33 @@ src/main/java/io/github/bys96/stock_api
 └── service/      # 지수 조회·수집·저장 로직
 ```
 
-## 사전 준비
+# 사전 준비 및 환경 설정
 
-1. Java 17을 설치합니다.
-2. MySQL 또는 PostgreSQL 데이터베이스를 준비합니다.
-3. KRX 데이터 API 인증 키를 발급받습니다.
+## 1. 사전 준비
+
+1. **Java 17**을 설치합니다.
+2. **MySQL** 또는 **PostgreSQL** 데이터베이스를 준비합니다.
+3. **KRX 데이터 API 인증 키**를 발급받습니다.
 4. 실행 환경에 맞는 설정 파일을 샘플 파일에서 생성합니다.
 
 ```powershell
 Copy-Item src/main/resources/application-local.properties.sample src/main/resources/application-local.properties
+Copy-Item src/main/resources/application-prod.properties.sample src/main/resources/application-prod.properties
 ```
 
-`application-local.properties`에 아래 값을 채웁니다. 이 파일은 `.gitignore`에 포함되어 있어 저장소에 커밋되지 않습니다.
+> `application-local.properties`, `application-prod.properties` 파일은 `.gitignore`에 포함되어 있어 저장소에 커밋되지 않습니다.
+
+---
+
+## 2. 프로필 설정
+
+실행 환경에 따라 `local`, `prod` 프로필을 사용합니다.
+
+* **local**: 로컬 개발 환경에서 사용합니다.
+* **prod**: 배포 환경에서 사용합니다.
+
+### 로컬 개발 환경 설정 (`application-local.properties`)
+로컬 개발 시에는 로컬 데이터베이스 및 개발 환경 설정값을 작성합니다.
 
 ```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/stock_db
@@ -54,14 +69,38 @@ frontend.urls=http://localhost:3000
 krx.api.key=YOUR_KRX_API_KEY
 ```
 
-PostgreSQL을 사용할 경우 `application-prod.properties.sample`의 JDBC URL 형식을 참고할 수 있습니다.
-
-기본 프로필은 `prod`로 설정되어 있습니다.
-
-로컬 개발 환경에서는 `application.properties`의 활성 프로필을 `local`로 변경합니다.
+### 배포 환경 설정 (`application-prod.properties`)
+배포 시에는 운영 환경 설정값을 작성합니다.
 
 ```properties
+spring.datasource.url=jdbc:postgresql://HOST:5432/DATABASE?sslmode=require
+spring.datasource.username=USERNAME
+spring.datasource.password=PASSWORD
+frontend.urls=https://your-vercel.vercel.app
+krx.api.key=YOUR_KRX_API_KEY
+```
+
+---
+
+## 3. 활성 프로필(Active Profile) 지정
+
+`application.properties`의 활성 프로필을 실행 환경에 맞게 변경합니다.
+
+### 로컬 개발 환경
+```properties
 spring.profiles.active=local
+```
+
+### 배포 환경
+```properties
+spring.profiles.active=prod
+```
+
+### 외부 클라우드 플랫폼(Render 등) 설정
+Render와 같은 클라우드 플랫폼에서는 설정 파일 대신 환경 변수로 관리할 수 있습니다. 이 경우 `application-prod.properties`에 작성하는 값을 환경 변수로 등록하고, 활성 프로필을 지정합니다.
+
+```env
+SPRING_PROFILES_ACTIVE=prod
 ```
 
 ## 실행
