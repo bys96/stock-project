@@ -56,10 +56,12 @@ krx.api.key=YOUR_KRX_API_KEY
 
 PostgreSQL을 사용할 경우 `application-prod.properties.sample`의 JDBC URL 형식을 참고할 수 있습니다.
 
-기본 설정은 `prod` 프로필입니다. 로컬에서 실행할 때는 `src/main/resources/application.properties`의 활성 프로필을 `local`로 변경하거나 환경 변수로 지정합니다.
+기본 프로필은 `prod`로 설정되어 있습니다.
 
-```powershell
-$env:SPRING_PROFILES_ACTIVE = "local"
+로컬 개발 환경에서는 `application.properties`의 활성 프로필을 `local`로 변경합니다.
+
+```properties
+spring.profiles.active=local
 ```
 
 ## 실행
