@@ -14,6 +14,32 @@ KRX(한국거래소)의 KOSPI · KOSDAQ 일별 지수 데이터를 자동으로 
 
 ---
 
+# Screenshots
+
+## 메인 화면
+
+![메인 화면](images/main.png)
+
+---
+
+## 날짜 선택
+
+![날짜 선택](images/date-search.png)
+
+---
+
+## 차트 조회
+
+![차트 조회](images/chart.png)
+
+---
+
+## 상세 정보
+
+![상세 정보](images/detail-card.png)
+
+---
+
 ## 상세 문서
 
 - [Frontend README](https://github.com/bys96/stock-project/blob/main/stock-frontend/README.md)
@@ -23,12 +49,23 @@ KRX(한국거래소)의 KOSPI · KOSDAQ 일별 지수 데이터를 자동으로 
 
 # Tech Stack
 
-| 분야 | 기술 |
-|------|------|
-| Frontend | React 19, Vite, Axios, Recharts |
-| Backend | Java 17, Spring Boot, Spring Data JPA, Spring WebFlux(WebClient) |
-| Database | MySQL (Local), PostgreSQL (Production) |
-| Deploy | Vercel, Render, Neon PostgreSQL |
+| 분야     | 기술                                                             |
+| -------- | ---------------------------------------------------------------- |
+| Frontend | React 19, Vite, Axios, Recharts                                  |
+| Backend  | Java 17, Spring Boot, Spring Data JPA, Spring WebFlux(WebClient) |
+| Database | MySQL (Local), PostgreSQL (Production)                           |
+| Deploy   | Vercel, Render, Neon PostgreSQL                                  |
+
+---
+
+## 프로젝트 특징
+
+- KRX API 데이터를 자동으로 동기화하여 데이터베이스에 저장
+- 마지막 저장일 이후 데이터만 조회하여 중복 요청 최소화
+- 서버 시작 시 초기 데이터 자동 동기화
+- 매일 18:00 자동 동기화 스케줄링
+- React와 Spring Boot를 분리하여 독립 배포
+- Local(MySQL)과 Production(PostgreSQL) 환경 분리
 
 ---
 
@@ -45,12 +82,12 @@ stock-project/
 
 # 시스템 구성
 
-| 영역 | 역할 |
-|------|------|
+| 영역           | 역할                                |
+| -------------- | ----------------------------------- |
 | stock-frontend | 사용자 입력, 차트 및 상세 정보 표시 |
-| stock-api | KRX 데이터 수집 및 REST API 제공 |
-| Database | 지수 데이터 저장 |
-| KRX Data API | 원천 지수 데이터 제공 |
+| stock-api      | KRX 데이터 수집 및 REST API 제공    |
+| Database       | 지수 데이터 저장                    |
+| KRX Data API   | 원천 지수 데이터 제공               |
 
 ---
 
@@ -97,6 +134,18 @@ stock-project/
 - 개발(Local) / 운영(Production) 환경 분리
 
 ---
+
+# 기술 선택 이유
+
+| 기술               | 선택 이유                                                                                        |
+| ------------------ | ------------------------------------------------------------------------------------------------ |
+| React              | 컴포넌트 기반으로 UI를 구성하고 상태에 따라 화면을 효율적으로 갱신하기 위해 선택했습니다.        |
+| Spring Boot        | REST API 개발과 데이터 처리 로직을 안정적으로 구현하기 위해 사용했습니다.                        |
+| Spring Data JPA    | 반복적인 SQL 작성 없이 데이터베이스를 효율적으로 관리하기 위해 사용했습니다.                     |
+| Spring WebClient   | KRX API와 비동기 통신을 수행하기 위해 사용했습니다.                                              |
+| Recharts           | React와 쉽게 연동되며 기간별 지수 데이터를 직관적으로 시각화할 수 있어 선택했습니다.             |
+| MySQL / PostgreSQL | 개발 환경은 MySQL, 운영 환경은 Render 무료 환경과 연동하기 위해 PostgreSQL(Neon)을 사용했습니다. |
+| Vercel / Render    | Frontend와 Backend를 각각 독립적으로 배포하고 운영하기 위해 사용했습니다.                        |
 
 # 빠른 시작
 
@@ -188,11 +237,11 @@ http://localhost:5173
 
 # 환경 변수
 
-| 위치 | 용도 |
-|------|------|
-| stock-frontend/.env | Frontend 개발 환경 |
-| application-local.properties | Backend 개발 환경 |
-| application-prod.properties | Backend 운영 환경 |
+| 위치                         | 용도               |
+| ---------------------------- | ------------------ |
+| stock-frontend/.env          | Frontend 개발 환경 |
+| application-local.properties | Backend 개발 환경  |
+| application-prod.properties  | Backend 운영 환경  |
 
 관리 항목
 
@@ -211,10 +260,10 @@ http://localhost:5173
 
 현재 배포 구성
 
-| 서비스 | 플랫폼 |
-|---------|---------|
-| Frontend | Vercel |
-| Backend | Render |
+| 서비스   | 플랫폼          |
+| -------- | --------------- |
+| Frontend | Vercel          |
+| Backend  | Render          |
 | Database | Neon PostgreSQL |
 
 배포 순서
@@ -227,6 +276,42 @@ http://localhost:5173
 
 ---
 
-# 👨‍💻 Developer
+# Trouble Shooting
+
+## 운영 데이터베이스 변경
+
+### 문제
+
+Render 무료 환경에서는 MySQL을 제공하지 않아 운영 환경에서 사용할 데이터베이스 구성이 필요했습니다.
+
+### 해결
+
+개발 환경은 MySQL을 유지하고, 운영 환경은 Neon PostgreSQL을 사용하도록 프로필을 분리하여 환경별 데이터베이스를 구성했습니다.
+
+---
+
+## 중복 데이터 저장 방지
+
+### 문제
+
+동기화 작업이 반복 실행될 경우 동일한 날짜의 데이터가 중복 저장될 수 있었습니다.
+
+### 해결
+
+`(market, trade_date)`를 기준으로 기존 데이터를 확인한 후 저장하도록 구현하여 중복 데이터를 방지했습니다.
+
+---
+
+## 불필요한 데이터 재수집 개선
+
+### 문제
+
+매번 전체 데이터를 다시 조회하면 API 호출량과 처리 시간이 증가했습니다.
+
+### 해결
+
+DB의 마지막 저장일을 기준으로 이후 거래일 데이터만 조회하도록 구현하여 불필요한 API 호출을 줄였습니다.
+
+# Developer
 
 **변윤석**
