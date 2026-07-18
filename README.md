@@ -9,8 +9,7 @@ KRX(한국거래소)의 KOSPI · KOSDAQ 일별 지수 데이터를 자동으로 
 
 ## Demo
 
-- **Frontend**  
-  https://stock-project-kappa.vercel.app/
+https://stock-project-kappa.vercel.app/
 
 ---
 
@@ -73,6 +72,7 @@ KRX(한국거래소)의 KOSPI · KOSDAQ 일별 지수 데이터를 자동으로 
 
 ```text
 stock-project/
+├── images/
 ├── stock-frontend/      # React/Vite 웹 애플리케이션
 ├── stock-api/           # Spring Boot REST API
 └── README.md
