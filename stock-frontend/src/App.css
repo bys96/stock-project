@@ -51,8 +51,15 @@ html {
   cursor: pointer;
 }
 
+.date-search input[type="date"] {
+  width: 130px;
+  min-width: 0;
+}
+
 .date-search-btn {
   padding: 7px 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
   border: none;
   border-radius: 6px;
   background-color: #2563eb;
